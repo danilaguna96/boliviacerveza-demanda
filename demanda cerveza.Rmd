@@ -1,0 +1,169 @@
+---
+title: "Caso de la Cerveza en Bolivia"
+author: "Daniel Laguna"
+date: "4/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Encabezado con logotipo de la universidad
+
+## Universidad Católica Boliviana "San Pablo"
+
+![La Paz, Bolivia](logoucb.png){width=60%}
+
+## Caso de la Cerveza en Bolivia-El problema de los inventarios
+
+Los motivos que nos llevan a indagar sobre el problema de inventarios de la industria cervecera boliviana se centran en que contar con inventarios óptimos es clave para cualquier empresa dado que el control y proyección deficiente de los mismos afecta significativamente la operatividad de la empresa considerando que los inventarios alimentan las ventas.
+
+Adicionalmente, los inventarios representan gran parte del capital de la compañia, por ello la importancia del estudio y
+fortalecimiento del plan de control interno de inventarios en general.
+
+# Fotografía pequeña de los integrantes del grupo y sus correos electrónicos
+
+## Equipo de trabajo
+
+Daniel Laguna ![dantonylagu@gmail.com](Fotodani.jpg){width=12%} ![dantonylagu@gmail.com]
+
+Gabriela Cuellar ![11.gabrielac@gmail.com](fotogabriela.jpg){width=14%} ![11.gabrielac@gmail.com]
+
+Andrea Capo ![capoandre97@gmail.com](fotoandrea.jpg){width=15%} ![capoandre97@gmail.com]
+
+# Situación problema que tratarás en el trabajo
+
+EL problema de inventarios al que se enfrentan las empresas cerveceras en Bolivia es que no satisfacen óptimamente la demanda dado que existen stocks de productos que se quedan en almacenes mientras otros son requeridos por los clientes y no satisfechos.
+
+Los recursos de los que se dispone para evaluar el problema son:
+
+• Tabla de datos de stock actual de productos
+
+Las variables a medir son: 
+
+• Demanda real 
+• Stock
+• Holgadura: Diferencia entre cantidad de productos disponible y demanda.
+
+# Identificación de al menos 3 artículos científicos y un libro en el que puedas encontrar soluciones propuestas a la situación problema
+
+Los artículos y libros consultados para encontrar posibles soluciones al problema de las empresas cerveceras de Bolivia son:
+
+1) El artículo “La gestión de inventario como factor estratégico en la administración de empresas“ menciona que la aplicación de modelos matemáticos sustentados en herramientas estadísticas permite planear y proyectar la administración de productos. Además de diagnosticar los costos correspondientes y la cantidad requerida en los inventarios de los productos.
+
+
+2) El artículo “Seasonal U.S. beer demand: socio-economic
+determinants and relation with other products“ menciona que la demanda de cerveza en los Estados Unidos se estimó tomando en cuenta factores demográficos, asi como el género y las diferencias culturales.
+
+El modelo empirico utilizado en este estudio se refleja en la siguiente función:
+
+$$ BeerCons_{it} = f (BeerP_{it} , Wine_{it} , Income_{it} , Demographics_{it} , Inequality_{it}) $$
+
+                        i = 1,.....,50
+
+                        t = 2009Q2,....,2015Q1
+
+                      j = MalePop, WhitePop, BlackPop
+
+Donde BeerCons representa el consumo de cerveza per capita y es una función del Precio de la Cerveza (BeerP), el precio de productos similares (WineP), ingresos per capita (Income), demografía (MalePop, WhitePop, BlackPop) y desigualdad de ingresos (GINI).
+
+3) En el artículo titulado “Modelo de inventarios para control económico de pedidos en empresa comercializadora de alimentos“ del autor Edwin Causado Rodríguez, busca: 
+
+•	Determinar la cantidad óptima de producto que se debe pedir  
+•	Disminuir el gasto de inventario en un período de tiempo. 
+
+Con la finalidad de satisfacer la demanda y disminuir los costos de manejo del inventario que se tienen actualmente”, Para esto se utilizó el modelo EOQ, pues este “describe el importante compromiso entre los costos fijos y los costos de mantener el inventario”.
+
+La fórmula aplicada fue:
+
+$$ EOQ = √ (2 * S * D) / H $$
+
+4)Ronal H. Ballou, en el libro “Logística, Administración de la cadena de suministro“, asegura que “Se usa un método de punto de reorden de control de inventarios para controlar el inventario de alto valor y las cantidades de reaprovisionamiento se determinan a partir de la fórmula” (pg. 401):
+
+
+$$ EOQ = √ (2 * S * D) / H $$
+
+El objetivo es determinar una cantidad de pedido (Q) que equilibre los costos de pedido frente a los costos de manejo de inventario. A partir de la fórmula EOQ.
+
+# Disponer de un dataset (puede ser datos de excel) sobre la situación problema (Si no dispones de datos puedes buscarlos en sitios como Kaggle
+
+
+```{r}
+
+library(readxl)
+dataset_cbn <- read_excel("F:/trabajofinalrstudio/dataset cbn.xlsx")
+
+head(dataset_cbn)
+```
+
+
+# Hacer un análisis exploratorio de los datos
+
+En la tabla de datos a continuación se puede observar 7 marcas diferentes de cerveza, mismas que están representadas por letras por temas de confidencialidad. Adicionalmente, también se cuenta con una columna que indica la disponibilidad de stock del mes y la demanda real por marca. De la misma manera, se tiene la columna de holgura, que refleja la falta de stock cuando el número es negativo y la disponibilidad de stock cuando el número es positivo.
+
+# Establecer si existe correlación entre las columnas del datas
+
+Pearson's product-moment correlation
+
+data:  dataset_cbn$`STOCK TOTAL` and dataset_cbn$`DEMANDA TOTAL`
+
+Pearson's product-moment correlation
+
+data:  dataset_cbn$`STOCK TOTAL` and dataset_cbn$`DEMANDA TOTAL`
+
+               t = 0.86894, 
+               df = 5, 
+               p-value = 0.4246
+
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.5374409  0.8762571
+sample estimates:
+     cor 
+0.362214
+
+Existe correlación positiva de 0.362214, dado que si aumenta la demanda, las empresas cerveceras deben aumentar sus stocks para poder satisfacer esa demanda creciente.
+
+# Hacer un gráfico de matriz de covarianza
+
+
+```{r}
+plot(cov(dataset_cbn$`STOCK TOTAL`,dataset_cbn$`DEMANDA TOTAL`))
+```
+
+# Estudiar el histograma , el gráfico de densidad y los cuantiles de la variable que más impacta sobre el problema.
+
+```{r}
+plot(hist(dataset_cbn$`DEMANDA TOTAL`))
+```
+
+Se puede ver el histograma que la demanda total se divide en 5 partes, donde una gran parte de los productos son demandados de 1 a 10000 cajas, hay muchos productos que en el tiempo puede llegar a 40000 cajas, dado la epoca alta de consumo de cerveza, que en Bolivia son carnaval y fin de año.
+
+```{r}
+plot(density(dataset_cbn$`DEMANDA TOTAL`))
+```
+
+
+       x                y            
+ Min.   :-16771   Min.   :1.111e-07  
+ 1st Qu.:  1739   1st Qu.:4.495e-06  
+ Median : 20250   Median :8.837e-06  
+ Mean   : 20250   Mean   :1.349e-05  
+ 3rd Qu.: 38761   3rd Qu.:1.983e-05  
+ Max.   : 57271   Max.   :4.245e-05
+
+
+En la grafica de densidad se puede ver la cantidad demanda de la mayoria de los productos, que es arriba de 10000 cajas, esas 40000 cajas de demanda, se refiere a la cantidad de cajas en epoca de carnaval y fin de año.
+
+
+# Citar las referencias bibliográficas
+
+• Garrido Bayas, Irma Yolanda, & Cejas Martínez, Magda (2017). LA GESTIÓN DE INVENTARIO COMO FACTOR ESTRATÉGICO EN LA ADMINISTRACIÓN DE EMPRESAS. Negotium, 13(37),109-129.[fecha de Consulta 6 de Marzo de 2021]. ISSN: . Disponible en: https://www.redalyc.org/articulo.oa?id=782/78252811007
+
+• Goel, R. K., & Saunoris, J. W. (2018). Seasonal U.S. beer demand: socio-economic determinants and relation with other products. Applied Economics Letters, 25(14), 972–979. https://doi.org/10.1080/13504851.2017.1388907
+
+• Rodriguez, E. C. (2015). Modelo de inventarios para control económico de pedidos en empresa comercializadora de alimentos. Revista Ingenierías Universidad de Medellín,15.
+
+• Ballou, R. (2004). Logística, Administración de la cadena de suministro. Mexico: Pearson Educación.
+
